@@ -11,5 +11,10 @@ def create_code_file(code, language):
 
 def execute_file(file_name, language):
     if language == "cpp":
-        subprocess.run(["g++", "code/" + file_name], capture_output=True, text=True)
-        subprocess.run(["./a.exe"])
+        result = subprocess.run(["g++", "code/" + file_name], stdin=subprocess.PIPE)
+        if result.returncode != 0:
+            return
+        result = subprocess.run(["./a.out"], stdout=subprocess.PIPE)
+        if result.returncode != 0:
+            return
+        return result.stdout.decode("utf-8")

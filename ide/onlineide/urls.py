@@ -9,7 +9,7 @@ router.register("user", views.UserViewSet)
 router.register("submit", views.SubmissionsViewSet)
 
 urlpatterns = [
-    path("ide", views.hello_world, name="hello"),
+    path("hello/", views.hello_world, ),
     path("", include(router.urls)),
 ]
 

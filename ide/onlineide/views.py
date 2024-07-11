@@ -8,15 +8,13 @@ from .utils import create_code_file, execute_file
 
 # Create your views here.
 def hello_world(request):
+    execute_file("main.cpp", "cpp")
     return HttpResponse("Hello world")
 
 
 class UserViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-
-
-from django.http import JsonResponse
 
 
 class SubmissionsViewSet(ModelViewSet):
@@ -28,6 +26,6 @@ class SubmissionsViewSet(ModelViewSet):
         file_name = create_code_file(
             request.data.get("code"), request.data.get("language")
         )
-        result = execute_file(file_name, request.data.get("language"))
-        print(result)
+        output = execute_file(file_name, request.data.get("language"))
+        request.data["user_output"] = output
         return super().create(request, *args, **kwargs)
